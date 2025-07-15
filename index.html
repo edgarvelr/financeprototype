@@ -276,16 +276,16 @@
             <div class="flex justify-between items-center h-16 w-full">
                 <!-- Logo only, no text -->
                 <a href="http://www.miamigov.com/" class="flex items-center flex-shrink-0">
-                    <img src="path/to/your/logo.png" alt="City of Miami Logo" class="h-10 w-auto" style="max-width: 120px;">
+                    <img src="../../images/logo/CITY SEAL-Mayor BG_transparent.png" alt="City of Miami Logo" class="h-10 w-auto" style="max-width: 120px;">
                 </a>
                 
                 <!-- Desktop Navigation Menu -->
                 <nav class="hidden md:flex space-x-8">
-                    <a href="http://www.miamigov.com/" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium transition-colors">Home</a>
-                    <a href="http://egov.ci.miami.fl.us/directory/citydirectory.aspx" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium transition-colors">City Directory</a>
-                    <a href="http://www.miamigov.com/City_Officials" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium transition-colors">City Officials</a>
+                    <a href="http://www.miami.gov/" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                    <a href="https://imiami.miamigov.com/OA_HTML/OA.jsp?page=/xxcmia/oracle/apps/per/external/directory/webui/XxcmiahrExtDirPG" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium transition-colors">City Directory</a>
+                    <a href="https://www.miami.gov/My-Government/City-Officials" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium transition-colors">City Officials</a>
                     <a href="http://miamifl.iqm2.com/Citizens/Default.aspx" target="_blank" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium transition-colors">Agendas</a>
-                    <a href="https://archive.miami.gov/employeerel/pages/jobs/Job%20Openings.asp" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium transition-colors">Employment</a>
+                    <a href="https://www.miami.gov/Careers-Jobs/City-Jobs/Apply-for-a-Job-with-the-City-View-Job-Openings" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium transition-colors">Employment</a>
                 </nav>
                 
                 <!-- Right side: toggle and menu -->
@@ -310,21 +310,13 @@
             </div>
         </div>
         <!-- Mobile Menu -->
-        <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" x-transition class="md:hidden" x-cloak>
+       <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" x-transition class="md:hidden" x-cloak>
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="http://www.miamigov.com/" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Home</a>
-                <a href="http://egov.ci.miami.fl.us/directory/citydirectory.aspx" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">City Directory</a>
-                <a href="http://www.miamigov.com/City_Officials" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">City Officials</a>
+                <a href="http://www.miami.gov/" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Home</a>
+                <a href="https://imiami.miamigov.com/OA_HTML/OA.jsp?page=/xxcmia/oracle/apps/per/external/directory/webui/XxcmiahrExtDirPG" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">City Directory</a>
+                <a href="https://www.miami.gov/My-Government/City-Officials" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">City Officials</a>
                 <a href="http://miamifl.iqm2.com/Citizens/Default.aspx" target="_blank" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Agendas</a>
-                <a href="https://archive.miami.gov/employeerel/pages/jobs/Job%20Openings.asp" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Employment</a>
-                <!-- Mobile dark mode toggle -->
-                <div class="flex items-center mt-3">
-                    <label for="darkmode-toggle-mobile" class="mr-2 text-base select-none" style="color: #000;">Darkmode</label>
-                    <label class="switch">
-                        <input id="darkmode-toggle-mobile" type="checkbox" @change="toggleDarkMode()" :checked="isDarkMode">
-                        <span class="slider"></span>
-                    </label>
-                </div>
+                <a href="https://www.miami.gov/Careers-Jobs/City-Jobs/Apply-for-a-Job-with-the-City-View-Job-Openings" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Employment</a>
             </div>
         </div>
     </header>
