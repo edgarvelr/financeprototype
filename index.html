@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Information - City of Miami</title>
+
+    <!-- Tailwind CSS for styling -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+
+    <!-- Alpine.js for interactivity -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+    <!-- Google Fonts: Inter & Merriweather -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Define custom fonts for Tailwind */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Dark mode styles */
+        body.dark {
+            background-color: #111827; /* Dark gray background */
+            color: #f9fafb;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Merriweather', serif;
+        }
+        
+        /* Custom styles for Alpine.js transitions */
+        [x-cloak] { display: none !important; }
+        
+        .list-item-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background-color: #f9fafb; /* bg-gray-50 */
+            border-radius: 0.5rem; /* rounded-lg */
+            border: 1px solid #e5e7eb;
+            transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+        }
+        
+        .list-item-link:hover {
+            background-color: #f3f4f6; /* hover:bg-gray-100 */
+            border-color: #d1d5db;
+        }
+        
+        /* Dark mode list item styles */
+        body.dark .list-item-link {
+            background-color: #374151; /* bg-gray-700 */
+            border-color: #4b5563;
+            color: #f9fafb;
+        }
+        
+        body.dark .list-item-link:hover {
+            background-color: #4b5563; /* hover:bg-gray-600 */
+            border-color: #6b7280;
+        }
+        
+        .section-subtitle {
+            margin-top: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 1.25rem;
+            color: #1f2937;
+            font-weight: 700;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        /* Dark mode section subtitle */
+        body.dark .section-subtitle {
+            color: #f9fafb;
+            border-bottom-color: #4b5563;
+        }
+        
+        /* Dark mode toggle button */
+        .dark-mode-toggle {
+            background: linear-gradient(45deg, #fbbf24, #f59e0b);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark-mode-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        body.dark .dark-mode-toggle {
+            background: linear-gradient(45deg, #1f2937, #374151);
+        }
+        
+        /* Dark mode header */
+        body.dark header {
+            background-color: #1f2937 !important;
+            border-bottom-color: #374151 !important;
+        }
+        
+        /* Dark mode main container */
+        body.dark .bg-white {
+            background-color: #1f2937 !important;
+        }
+        
+        /* Dark mode text colors */
+        body.dark .text-gray-800 {
+            color: #f9fafb !important;
+        }
+        
+        body.dark .text-gray-600 {
+            color: #d1d5db !important;
+        }
+        
+        body.dark .text-gray-500 {
+            color: #9ca3af !important;
+        }
+        
+        body.dark .text-gray-700 {
+            color: #d1d5db !important;
+        }
+        
+        body.dark .text-gray-900 {
+            color: #f9fafb !important;
+        }
+        
+        /* Dark mode background colors */
+        body.dark .bg-gray-100 {
+            background-color: #374151 !important;
+        }
+        
+        body.dark .bg-gray-200 {
+            background-color: #4b5563 !important;
+        }
+        
+        body.dark .bg-gray-50 {
+            background-color: #374151 !important;
+        }
+        
+        /* Dark mode border colors */
+        body.dark .border-gray-200 {
+            border-color: #374151 !important;
+        }
+        
+        body.dark .border {
+            border-color: #4b5563 !important;
+        }
+        
+        /* Dark mode shadow */
+        body.dark .shadow-lg {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3) !important;
+        }
+        
+        body.dark .shadow-md {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3) !important;
+        }
+        /* Responsive header and dark mode toggle styles */
+        @media (max-width: 640px) {
+          header .container {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+          }
+          header .h-16 {
+            height: 3.5rem;
+          }
+          header img {
+            max-width: 90px;
+            height: 2rem;
+          }
+          .dark-mode-toggle, #darkmode-toggle, #darkmode-toggle-mobile {
+            width: 48px !important;
+            height: 28px !important;
+            min-width: 48px;
+            min-height: 28px;
+          }
+          .dark-mode-toggle span, #darkmode-toggle span, #darkmode-toggle-mobile span {
+            width: 24px !important;
+            height: 24px !important;
+          }
+          .dark-mode-toggle label, #darkmode-toggle label, #darkmode-toggle-mobile label {
+            font-size: 1rem;
+          }
+        }
+        /* Switch toggle styles */
+        .switch {
+          position: relative;
+          display: inline-block;
+          width: 48px;
+          height: 28px;
+        }
+        .switch input {
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+        .slider {
+          position: absolute;
+          cursor: pointer;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: #374151;
+          transition: .4s;
+          border-radius: 34px;
+        }
+        .slider:before {
+          position: absolute;
+          content: "";
+          height: 22px;
+          width: 22px;
+          left: 3px;
+          bottom: 3px;
+          background-color: white;
+          transition: .4s;
+          border-radius: 50%;
+        }
+        .switch input:checked + .slider {
+          background-color: #2563eb;
+        }
+        .switch input:checked + .slider:before {
+          transform: translateX(20px);
+        }
+        @media (max-width: 640px) {
+          header .container {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+          }
+          header .h-16 {
+            height: 3.5rem;
+          }
+          header img {
+            max-width: 90px;
+            height: 2rem;
+          }
+          .switch {
+            width: 40px;
+            height: 24px;
+          }
+          .slider:before {
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+          }
+        }
+        body.dark [for="darkmode-toggle"],
+        body.dark [for="darkmode-toggle-mobile"] {
+          color: #f3f4f6 !important;
+        }
+        /* Fallback header style if Tailwind fails to load */
+        header, .container { box-sizing: border-box; }
+        header { background: #fff; border-bottom: 1px solid #eee; padding: 0.5em 1em; }
+        header a img { display: inline-block; vertical-align: middle; }
+        header .switch { vertical-align: middle; }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Responsive Header -->
+    <header class="bg-white shadow-md sticky top-0 z-40" x-data="{ mobileMenuOpen: false, isDarkMode: false }" x-init="isDarkMode = localStorage.getItem('darkMode') === 'true'; if (isDarkMode) { document.body.classList.add('dark'); } window.toggleDarkMode = function() { isDarkMode = !isDarkMode; if (isDarkMode) { document.body.classList.add('dark'); localStorage.setItem('darkMode', 'true'); } else { document.body.classList.remove('dark'); localStorage.setItem('darkMode', 'false'); } }">
+        <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 w-full">
+                <!-- Logo only, no text -->
+                <a href="http://www.miamigov.com/" class="flex items-center flex-shrink-0">
+                    <img src="path/to/your/logo.png" alt="City of Miami Logo" class="h-10 w-auto" style="max-width: 120px;">
+                </a>
+                
+                <!-- Desktop Navigation Menu -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="http://www.miamigov.com/" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                    <a href="http://egov.ci.miami.fl.us/directory/citydirectory.aspx" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium transition-colors">City Directory</a>
+                    <a href="http://www.miamigov.com/City_Officials" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium transition-colors">City Officials</a>
+                    <a href="http://miamifl.iqm2.com/Citizens/Default.aspx" target="_blank" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium transition-colors">Agendas</a>
+                    <a href="https://archive.miami.gov/employeerel/pages/jobs/Job%20Openings.asp" class="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium transition-colors">Employment</a>
+                </nav>
+                
+                <!-- Right side: toggle and menu -->
+                <div class="flex items-center space-x-4">
+                    <!-- Dark Mode Toggle Switch -->
+                    <div class="flex items-center">
+                        <label for="darkmode-toggle" class="mr-2 text-base select-none hidden sm:block" style="color: #000;">Darkmode</label>
+                        <label class="switch">
+                            <input id="darkmode-toggle" type="checkbox" @change="toggleDarkMode()" :checked="isDarkMode">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <!-- Mobile Menu Button -->
+                    <div class="md:hidden">
+                        <button @click="mobileMenuOpen = !mobileMenuOpen" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                            <span class="sr-only">Open main menu</span>
+                            <svg x-show="!mobileMenuOpen" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                            <svg x-show="mobileMenuOpen" x-cloak class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" x-transition class="md:hidden" x-cloak>
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="http://www.miamigov.com/" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Home</a>
+                <a href="http://egov.ci.miami.fl.us/directory/citydirectory.aspx" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">City Directory</a>
+                <a href="http://www.miamigov.com/City_Officials" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">City Officials</a>
+                <a href="http://miamifl.iqm2.com/Citizens/Default.aspx" target="_blank" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Agendas</a>
+                <a href="https://archive.miami.gov/employeerel/pages/jobs/Job%20Openings.asp" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Employment</a>
+                <!-- Mobile dark mode toggle -->
+                <div class="flex items-center mt-3">
+                    <label for="darkmode-toggle-mobile" class="mr-2 text-base select-none" style="color: #000;">Darkmode</label>
+                    <label class="switch">
+                        <input id="darkmode-toggle-mobile" type="checkbox" @change="toggleDarkMode()" :checked="isDarkMode">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-7xl bg-white rounded-lg shadow-lg my-8">
+
+        <!-- Main Content Area -->
+        <main class="p-6 md:p-8" x-data="{ activeTab: 'policies', isDarkMode: false }" x-init="
+            // Check for saved dark mode preference or default to light mode
+            isDarkMode = localStorage.getItem('darkMode') === 'true';
+            if (isDarkMode) {
+                document.body.classList.add('dark');
+            }
+            
+            // Function to toggle dark mode
+            window.toggleDarkMode = function() {
+                isDarkMode = !isDarkMode;
+                if (isDarkMode) {
+                    document.body.classList.add('dark');
+                    localStorage.setItem('darkMode', 'true');
+                } else {
+                    document.body.classList.remove('dark');
+                    localStorage.setItem('darkMode', 'false');
+                }
+            }
+            
+            // Ensure activeTab is properly initialized
+            if (!activeTab) {
+                activeTab = 'policies';
+            }
+        ">
+
+            <!-- Welcome Title -->
+            <div class="text-center mb-12">
+                 <h1 class="text-4xl md:text-5xl font-bold text-gray-800">Financial Information</h1>
+                 <p class="text-lg text-gray-600 max-w-3xl mx-auto mt-4">
+                    Access to the City of Miami's key financial documents and reports.
+                </p>
+            </div>
+
+            <!-- Tab Buttons -->
+            <div class="border-b border-gray-200 mb-8">
+                <nav class="-mb-px flex flex-wrap justify-center gap-x-4 sm:gap-x-6" aria-label="Tabs">
+                    <button @click="activeTab = 'policies'" :class="{'border-blue-600 text-blue-700': activeTab === 'policies', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'policies'}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors">Policies and Procedures</button>
+                    <button @click="activeTab = 'eort'" :class="{'border-blue-600 text-blue-700': activeTab === 'eort', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'eort'}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors">EORT Actuarial Valuation Reports</button>
+                    <button @click="activeTab = 'cost-allocation'" :class="{'border-blue-600 text-blue-700': activeTab === 'cost-allocation', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'cost-allocation'}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors">Cost Allocation Plan</button>
+                    <button @click="activeTab = 'monthly-reports'" :class="{'border-blue-600 text-blue-700': activeTab === 'monthly-reports', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'monthly-reports'}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors">Monthly Financial Reports</button>
+                    <button @click="activeTab = 'annual-reports'" :class="{'border-blue-600 text-blue-700': activeTab === 'annual-reports', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'annual-reports'}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors">Annual Reports</button>
+                    <button @click="activeTab = 'debt-management'" :class="{'border-blue-600 text-blue-700': activeTab === 'debt-management', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'debt-management'}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors">Debt Management</button>
+                </nav>
+            </div>
+
+            <!-- Tab Content -->
+            <div>
+                <!-- Policies Tab -->
+                <div x-show="activeTab === 'policies'" x-cloak x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Policies and Procedures</h2>
+                    <ul class="space-y-3">
+                        <li><a href="https://archive.miami.gov/finance/Policies&Procedures&Definitions/City%20of%20Miami%20Debt%20Management%20Policy.pdf" target="_blank" class="list-item-link"><strong>Debt Management Policy</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                        <li><a href="https://archive.miami.gov/finance/Policies&Procedures&Definitions/City%20of%20Miami%20Investment%20Policy.pdf" target="_blank" class="list-item-link"><strong>Investment Policy</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+
+                    </ul>
+                </div>
+
+                <!-- EORT Reports-->
+                <div x-show="activeTab === 'eort'" x-cloak x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">EORT Actuarial Valuation Reports</h2>
+                    <ul class="space-y-3">
+                        <li><a href="https://archive.miami.gov/finance/EORT/EORT%20Revised%201-1-2024%20Actuarial%20Report.pdf" target="_blank" class="list-item-link"><strong>EORT AVR 2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                        <li><a href="https://archive.miami.gov/finance/EORT/EORT%20ValReport2023.pdf" target="_blank" class="list-item-link"><strong>EORT AVR 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                        <li><a href="https://archive.miami.gov/finance/EORT/EORT%20AVR%202022.pdf" target="_blank" class="list-item-link"><strong>EORT AVR 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                        <li><a href="https://archive.miami.gov/finance/EORT/EORT%20AVR%202021.pdf" target="_blank" class="list-item-link"><strong>EORT AVR 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                        <li><a href="https://archive.miami.gov/finance/EORT/EORT%20AVR%202020.pdf" target="_blank" class="list-item-link"><strong>EORT AVR 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                        <li><a href="https://archive.miami.gov/finance/EORT/EORT%20AVR%202019.pdf" target="_blank" class="list-item-link"><strong>EORT AVR 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                        <li><a href="https://archive.miami.gov/finance/EORT/PE2-EORT%20Actuarial%20Report%20FY2018.pdf" target="_blank" class="list-item-link"><strong>EORT AVR 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                        <li><a href="https://archive.miami.gov/finance/EORT/EORT%20Actuarial%20Report%20FY2017_Secured.pdf" target="_blank" class="list-item-link"><strong>EORT AVR 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                        <li><a href="https://archive.miami.gov/finance/EORT/EORT%20Actuarial%20Report%20FY2016.pdf" target="_blank" class="list-item-link"><strong>EORT AVR 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                        <li><a href="https://archive.miami.gov/finance/EORT/EORT%20Actuarial%20Valuation%20%20Report%20Jan%202015.pdf" target="_blank" class="list-item-link"><strong>EORT AVR 2015</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                        <li><a href="https://archive.miami.gov/finance/EORT/EORT%20Actuarial%20Valuation%20Report%20Jan%202014.pdf" target="_blank" class="list-item-link"><strong>EORT AVR 2014</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                        <li><a href="https://archive.miami.gov/finance/EORT/EORT%20Actuarial%20Valuation%20Report%20Jan%202013.pdf" target="_blank" class="list-item-link"><strong>EORT AVR 2013</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                    </ul>
+                </div>
+                <!--Cost Allocation Plan-->
+                  <div x-show="activeTab === 'cost-allocation'" x-cloak x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Cost Allocation</h2>
+                    <ul class="space-y-3">
+                        <li><a href="http://archive.miamigov.com/finance/docs/FINALCAPFY25Secured.pdf" target="_blank" class="list-item-link"><strong>2024-2025</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/FINAL%20CAP%20FY24%20SECURED.pdf" target="_blank" class="list-item-link"><strong>2023-2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/FINAL%20CAP%20FY%202023%28secured%29.pdf" target="_blank" class="list-item-link"><strong>2022-2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/FINAL%20CAP%20FY%202022%20%28secured%29.pdf" target="_blank" class="list-item-link"><strong>2021-2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/FINAL%20CAP%20FY%202021%20%28Secured%29.pdf" target="_blank" class="list-item-link"><strong>2020-2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/CAP-FY-2020%20Final.pdf" target="_blank" class="list-item-link"><strong>2019-2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/2018-2019%20COST%20PLAN%20Final%20Secured.PDF" target="_blank" class="list-item-link"><strong>2018-2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/2017-2018CostAllocationPlanSecured.pdf" target="_blank" class="list-item-link"><strong>2017-2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/2016-2017%20Cost%20Allocation%20Plan.pdf" target="_blank" class="list-item-link"><strong>2016-2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/2015-2016%20Cost%20Allocation%20&%20Indirect%20Cost%20Plan-9-10-2015.pdf" target="_blank" class="list-item-link"><strong>2015-2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                    </ul>
+                </div>
+                <!-- Monthly Financial Reports Tab -->
+                <div x-show="activeTab === 'monthly-reports'" x-cloak x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Monthly Financial Reports</h2>
+                    <div class="space-y-4">
+                        <!-- 2025 Accordion -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-left transition text-lg">
+                                <span>2025</span><span x-text="open ? '−' : '+'" class="text-2xl font-mono"></span>
+                            </button>
+                            <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="p-4 bg-white border rounded-b-lg">
+                                <ul class="space-y-3">
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2025/Monthly%20Financial%20-January%202025.pdf" target="_blank" class="list-item-link"><strong>January 2025</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2025/Monthly%20Financial%20-%20February-2025.pdf" target="_blank" class="list-item-link"><strong>February 2025</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2025/Monthly%20Financial%20-March.pdf" target="_blank" class="list-item-link"><strong>March 2025</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2025/Monthly%20Financial%20-April-2025.pdf" target="_blank" class="list-item-link"><strong>April 2025</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2025/Monthly%20financila-May-2025-1.pdf" target="_blank" class="list-item-link"><strong>May 2025</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <!-- Add June–December for 2025 as available -->
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- 2024 Accordion -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-left transition text-lg">
+                                <span>2024</span><span x-text="open ? '−' : '+'" class="text-2xl font-mono"></span>
+                            </button>
+                            <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="p-4 bg-white border rounded-b-lg">
+                                <ul class="space-y-3">
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2024/Monthly%20Financials-%20Jan%202024.pdf" target="_blank" class="list-item-link"><strong>January 2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2024/Monthly%20Financials%20-%20Feb-2024.pdf" target="_blank" class="list-item-link"><strong>February 2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2024/Monthly%20Financials%20-%20March%202024.pdf" target="_blank" class="list-item-link"><strong>March 2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2024/Monthly%20Financials-April-2024.pdf" target="_blank" class="list-item-link"><strong>April 2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2024/Monthly%20Financials%20-%20May.pdf" target="_blank" class="list-item-link"><strong>May 2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2024/Monthly%20Financials%20-%20June%202024.pdf" target="_blank" class="list-item-link"><strong>June 2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2024/Monthly%20Financial%20-July%20-2024.pdf" target="_blank" class="list-item-link"><strong>July 2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2024/Monthly%20Financials%20-%20Aug-2024.pdf" target="_blank" class="list-item-link"><strong>August 2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2024/Monthly%20Financial%20-%20September-2024.pdf" target="_blank" class="list-item-link"><strong>September 2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2024/Monthly%20Financial-Oct-2024.pdf" target="_blank" class="list-item-link"><strong>October 2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2024/Monthly%20Financial%20-%20November.pdf" target="_blank" class="list-item-link"><strong>November 2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2024/Monthly%20Financial%20-%20December-24.pdf" target="_blank" class="list-item-link"><strong>December 2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- 2023 Accordion -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-left transition text-lg">
+                                <span>2023</span><span x-text="open ? '−' : '+'" class="text-2xl font-mono"></span>
+                            </button>
+                            <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="p-4 bg-white border rounded-b-lg">
+                                <ul class="space-y-3">
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2023/Monthly%20Fiancial%20-Jan-2023.pdf" target="_blank" class="list-item-link"><strong>January 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2023/Monthly%20Financials%20-Feb%20-2023.pdf" target="_blank" class="list-item-link"><strong>February 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2023/Monthly%20Fianancial%20-%20March%20-2023.pdf" target="_blank" class="list-item-link"><strong>March 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2023/Monthly%20Financials%20-%20April%202023.pdf" target="_blank" class="list-item-link"><strong>April 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2023/Monthly%20Financials%20-%20May%202023.pdf" target="_blank" class="list-item-link"><strong>May 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2023/Monthly%20Financials-%20June-2023.pdf" target="_blank" class="list-item-link"><strong>June 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2023/Monthly%20Financials%20-%20July%202023.pdf" target="_blank" class="list-item-link"><strong>July 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2023/Monthly%20Financial%20-%20August-2023.pdf" target="_blank" class="list-item-link"><strong>August 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2023/Monthly%20Financial%20-%20September-2023.pdf" target="_blank" class="list-item-link"><strong>September 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2023/Monthly%20Financial%20-%20Oct-2023.pdf" target="_blank" class="list-item-link"><strong>October 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2023/Monthly%20Financial%20-November-2023.pdf" target="_blank" class="list-item-link"><strong>November 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2023/Monthly%20Financial%20-%20Dec-2023.pdf" target="_blank" class="list-item-link"><strong>December 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- 2022 Accordion -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-left transition text-lg">
+                                <span>2022</span><span x-text="open ? '−' : '+'" class="text-2xl font-mono"></span>
+                            </button>
+                            <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="p-4 bg-white border rounded-b-lg">
+                                <ul class="space-y-3">
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2022/Monthly%20Financial%20-%20January%202022.pdf" target="_blank" class="list-item-link"><strong>January 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2022/Monthly%20Financial%20-%20Feb%2022.pdf" target="_blank" class="list-item-link"><strong>February 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2022/Monthly%20Financial%20-%20March.pdf" target="_blank" class="list-item-link"><strong>March 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2022/Monthly%20Financials%20-%20April.pdf" target="_blank" class="list-item-link"><strong>April 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2022/Monthly%20Financials%20-%20May%202022.pdf" target="_blank" class="list-item-link"><strong>May 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2022/Monthly%20Financeial%20-%20June%202022.pdf" target="_blank" class="list-item-link"><strong>June 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2022/Monthly%20Financial%20-%20July.pdf" target="_blank" class="list-item-link"><strong>July 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2022/Monthly%20Financial%20-%20August.pdf" target="_blank" class="list-item-link"><strong>August 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2022/Monthly%20Financial%20-%20Sept%202022.pdf" target="_blank" class="list-item-link"><strong>September 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2022/Monthly%20Financial%20-%20Oct%202022.pdf" target="_blank" class="list-item-link"><strong>October 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2022/Monthly%20Financial-Nov-2022.pdf" target="_blank" class="list-item-link"><strong>November 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2022/Monthly%20Financial%20-%20December.pdf" target="_blank" class="list-item-link"><strong>December 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- 2021 Accordion -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-left transition text-lg">
+                                <span>2021</span><span x-text="open ? '−' : '+'" class="text-2xl font-mono"></span>
+                            </button>
+                            <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="p-4 bg-white border rounded-b-lg">
+                                <ul class="space-y-3">
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2021/Monthly%20Financial%20-%20Jan%202021.pdf" target="_blank" class="list-item-link"><strong>January 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2021/MonthlyFinancial-Feb2021.pdf" target="_blank" class="list-item-link"><strong>February 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2021/Monthly%20Financial%20-%20March.pdf" target="_blank" class="list-item-link"><strong>March 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2021/Monthly%20Financial%20-%20April.pdf" target="_blank" class="list-item-link"><strong>April 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2021/Monthly%20Financials%20-%20May%202021.pdf" target="_blank" class="list-item-link"><strong>May 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2021/Monthly%20Financial%20-%20June%202021.pdf" target="_blank" class="list-item-link"><strong>June 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2021/Monthly%20Finantial%20-%20July.pdf" target="_blank" class="list-item-link"><strong>July 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2021/Monthly%20Financial%20-%20August-2021.pdf" target="_blank" class="list-item-link"><strong>August 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2021/Monthly%20Financial%20-%20September-2021.pdf" target="_blank" class="list-item-link"><strong>September 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2021/Monthly%20Financial%20-OCT%202021.pdf" target="_blank" class="list-item-link"><strong>October 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2021/Monthly%20Financial%20-%20Nov%2021.pdf" target="_blank" class="list-item-link"><strong>November 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2021/Monthly%20Financials%20-Dec%202021.pdf" target="_blank" class="list-item-link"><strong>December 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- 2020 Accordion -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-left transition text-lg">
+                                <span>2020</span><span x-text="open ? '−' : '+'" class="text-2xl font-mono"></span>
+                            </button>
+                            <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="p-4 bg-white border rounded-b-lg">
+                                <ul class="space-y-3">
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2020/Monthly%20Financials-January%202020.pdf" target="_blank" class="list-item-link"><strong>January 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2020/MonthlyFinancials-February2020.pdf" target="_blank" class="list-item-link"><strong>February 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2020/Monthly%20Financials-March%202020.pdf" target="_blank" class="list-item-link"><strong>March 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2020/MonthlyFinancials-April2020.pdf" target="_blank" class="list-item-link"><strong>April 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2020/Monthly%20Financials%20%20-%20May%2020.pdf" target="_blank" class="list-item-link"><strong>May 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2020/Monthly%20Financial%20-%20June%202020.pdf" target="_blank" class="list-item-link"><strong>June 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2020/Monthly%20Financial%20-%20July%2020.pdf" target="_blank" class="list-item-link"><strong>July 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2020/Monthly%20Financial%20-%20August%202020.pdf" target="_blank" class="list-item-link"><strong>August 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2020/Monthly%20Financial%20-%20September%202020.pdf" target="_blank" class="list-item-link"><strong>September 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2020/October%20-%202020%20MF-RE.pdf" target="_blank" class="list-item-link"><strong>October 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2020/Monthly%20Financial%20-%20Nov%202020.pdf" target="_blank" class="list-item-link"><strong>November 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2020/Monthly%20Financial%20-%20December%202020.pdf" target="_blank" class="list-item-link"><strong>December 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- 2019 Accordion -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-left transition text-lg">
+                                <span>2019</span><span x-text="open ? '−' : '+'" class="text-2xl font-mono"></span>
+                            </button>
+                            <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="p-4 bg-white border rounded-b-lg">
+                                <ul class="space-y-3">
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2019/Monthly%20Financials%20-%20January%202019.pdf" target="_blank" class="list-item-link"><strong>January 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2019/MonthlyFinancials-February2019.pdf" target="_blank" class="list-item-link"><strong>February 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2019/MonthlyFinancials-March2019.pdf" target="_blank" class="list-item-link"><strong>March 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2019/MonthlyFinancials-April2019.pdf" target="_blank" class="list-item-link"><strong>April 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2019/Monthly%20Financials%20-%20May%202019.pdf" target="_blank" class="list-item-link"><strong>May 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2019/Monthly%20Financials-June%202019.pdf" target="_blank" class="list-item-link"><strong>June 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2019/Monthly%20Financials-July%202019.pdf" target="_blank" class="list-item-link"><strong>July 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2019/Monthly%20Financials-August%202019.pdf" target="_blank" class="list-item-link"><strong>August 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2019/Monthly%20Financials-September%202019.pdf" target="_blank" class="list-item-link"><strong>September 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2019/Monthly%20Financials-October%202019.pdf" target="_blank" class="list-item-link"><strong>October 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2019/Monthly%20Financials-November%202019.pdf" target="_blank" class="list-item-link"><strong>November 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2019/Monthly%20Financials-December%202019.pdf" target="_blank" class="list-item-link"><strong>December 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- 2018 Accordion -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-left transition text-lg">
+                                <span>2018</span><span x-text="open ? '−' : '+'" class="text-2xl font-mono"></span>
+                            </button>
+                            <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="p-4 bg-white border rounded-b-lg">
+                                <ul class="space-y-3">
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2018/Monthly%20Financial%20Report%20-%20January%202018.pdf" target="_blank" class="list-item-link"><strong>January 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2018/Monthly%20Financial%20Report%20-%20February%202018.pdf" target="_blank" class="list-item-link"><strong>February 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2018/Monthly%20Financial%20Report%20-%20March%202018.pdf" target="_blank" class="list-item-link"><strong>March 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2018/Monthly%20Financial%20Report%20-%20April%202018.pdf" target="_blank" class="list-item-link"><strong>April 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2018/Monthly%20Financial%20Report%20-%20May%202018.pdf" target="_blank" class="list-item-link"><strong>May 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2018/Monthly%20Financial%20Report%20-%20June%202018.pdf" target="_blank" class="list-item-link"><strong>June 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2018/Monthly%20Financial%20Report%20-%20July%202018.pdf" target="_blank" class="list-item-link"><strong>July 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2018/Monthly%20Financial%20Report%20-%20August%202018.pdf" target="_blank" class="list-item-link"><strong>August 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2018/Monthly%20Financial%20Report%20-%20September%202018.pdf" target="_blank" class="list-item-link"><strong>September 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2018/Monthly%20Financial%20Report%20-%20October%202018.pdf" target="_blank" class="list-item-link"><strong>October 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2018/Monthly%20Financials%20-%20November%202018.pdf" target="_blank" class="list-item-link"><strong>November 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2018/Monthly%20Financials%20-%20December%202018.pdf" target="_blank" class="list-item-link"><strong>December 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- 2017 Accordion -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-left transition text-lg">
+                                <span>2017</span><span x-text="open ? '−' : '+'" class="text-2xl font-mono"></span>
+                            </button>
+                            <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="p-4 bg-white border rounded-b-lg">
+                                <ul class="space-y-3">
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2017/Monthly%20Financial%20Report%20(New)%20-%20Jan%202017.pdf" target="_blank" class="list-item-link"><strong>January 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2017/Monthly%20Financial%20Report%20-%20Feb%202017.pdf" target="_blank" class="list-item-link"><strong>February 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2017/Monthly%20Financial%20Report%20-%20March%202017.pdf" target="_blank" class="list-item-link"><strong>March 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2017/Monthly%20Financial%20Report%20-%20April%202017.pdf" target="_blank" class="list-item-link"><strong>April 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2017/Monthly%20Financial%20Report%20-%20May%202017.pdf" target="_blank" class="list-item-link"><strong>May 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2017/Monthly%20Financial%20Report%20-%20June%202017.pdf" target="_blank" class="list-item-link"><strong>June 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2017/Monthly%20Financial%20Report%20-%20July%202017.pdf" target="_blank" class="list-item-link"><strong>July 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2017/Monthly%20Financial%20Report%20-%20August%202017.pdf" target="_blank" class="list-item-link"><strong>August 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2017/Monthly%20Financial%20Report%20-%20September%202017.pdf" target="_blank" class="list-item-link"><strong>September 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2017/Monthly%20Financial%20Report%20-%20October%202017.pdf" target="_blank" class="list-item-link"><strong>October 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2017/Monthly%20Financial%20Report%20-%20November%202017.pdf" target="_blank" class="list-item-link"><strong>November 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MFR2017/Monthly%20Financial%20Report%20-%20December%202017.pdf" target="_blank" class="list-item-link"><strong>December 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- 2016 Accordion -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-left transition text-lg">
+                                <span>2016</span><span x-text="open ? '−' : '+'" class="text-2xl font-mono"></span>
+                            </button>
+                            <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="p-4 bg-white border rounded-b-lg">
+                                <ul class="space-y-3">
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MonthlyFinancialReports16/Monthly%20Financial%20Report%20-%20Jan%202016.pdf" target="_blank" class="list-item-link"><strong>January 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MonthlyFinancialReports16/Monthly%20Financial%20Report%20-%20Feb%202016.pdf" target="_blank" class="list-item-link"><strong>February 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MonthlyFinancialReports16/MonthlyFinancialReport-Mar2016.pdf" target="_blank" class="list-item-link"><strong>March 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MonthlyFinancialReports16/REVISED%20Monthly%20Financial%20Report%20-%20Apr%202016.pdf" target="_blank" class="list-item-link"><strong>April 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MonthlyFinancialReports16/Monthly%20Financial%20Report%20-%20May%202016.pdf" target="_blank" class="list-item-link"><strong>May 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MonthlyFinancialReports16/Monthly%20Financial%20Report%20-%20June%202016.pdf" target="_blank" class="list-item-link"><strong>June 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MonthlyFinancialReports16/Monthly%20Financial%20Report%20(Final)%20-%20July%202016.pdf" target="_blank" class="list-item-link"><strong>July 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MonthlyFinancialReports16/Monthly%20Financial%20Report%20(Final)%20-%20August%202016.pdf" target="_blank" class="list-item-link"><strong>August 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MonthlyFinancialReports16/Monthly%20Financial%20Report%20(Final)-%20September%202016.pdf" target="_blank" class="list-item-link"><strong>September 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MonthlyFinancialReports16/Monthly%20Financial%20Report%20-%20October%202016.pdf" target="_blank" class="list-item-link"><strong>October 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MonthlyFinancialReports16/FlMonthlyFinancialReportRev_1_6_17-Nov2016Final.pdf" target="_blank" class="list-item-link"><strong>November 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/MonthlyFinancialReports/MonthlyFinancialReports16/Monthly%20Financial%20Report%20(Final)-%20December%202016.pdf" target="_blank" class="list-item-link"><strong>December 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Annual Financial Reports -->
+                <div x-show="activeTab === 'annual-reports'" x-cloak x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95">
+                    <!-- CAFR Accordion -->
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Annual Reports</h2>
+                    <div class="space-y-4">
+                          <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-left transition text-lg">
+                                <span>Annual Comprehensive Financial Reports (CAFR)</span><span x-text="open ? '−' : '+'" class="text-2xl font-mono"></span>
+                            </button>
+                            <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="p-4 bg-white border rounded-b-lg"><ul class="space-y-3">
+                                <li><a href="https://archive.miami.gov/finance/CAFR/Annual%20Comprehensive%20Financial%20Report%20For%20the%20Fiscal%20Year%20Ended%20September%2030,%202024%20(Electronic)%20secured.pdf" target="_blank" class="list-item-link"><strong>FY 2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/CAFR/Annual%20Comprehensive%20Financial%20Report%20For%20the%20Fiscal%20Year%20Ended%20September%2030,%202023%20(Electronic)%20Secured.pdf" target="_blank" class="list-item-link"><strong>FY 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/CAFR/Annual%20Comprehensive%20Financial%20Report%20For%20the%20Fiscal%20Year%20Ended%20September%2030,%202022%20Final%203-31-23%20(Electronic)%20-Secured.pdf" target="_blank" class="list-item-link"><strong>FY 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/CAFR/Annual%20Comprehensive%20%20Financial%20Report%20For%20the%20Fiscal%20Year%20Ended%20September%2030%202021%20FINAL%204-21-22%20EV%20-Secured.pdf" target="_blank" class="list-item-link"><strong>FY 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/CAFR/Comprehensive%20Annual%20Financial%20Report%20For%20the%20Fiscal%20Year%20Ended%20September%2030,%202020%20FINAL%20ev%20(Secured).pdf" target="_blank" class="list-item-link"><strong>FY 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/CAFR/Comprehensive%20Annual%20Financial%20Report%20For%20the%20Fiscal%20Year%20Ended%20September%2030,%202019-FINAL%20Electronic%20Version%20-Secured.pdf" target="_blank" class="list-item-link"><strong>FY 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/CAFR/City%20Of%20Miami%20Comprehensive%20Annual%20Financial%20Report%20For%20the%20Fiscal%20Year%20Ended%20September%2030,%202018%20(Ev)%20SECURED.pdf" target="_blank" class="list-item-link"><strong>FY 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/docs/FY15-City-of-Miami-Comprehensive-Annual-Financial-Report-Final.pdf" target="_blank" class="list-item-link"><strong>FY 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/docs/FY2016%20City%20of%20Miami%20Comprehensive%20Annual%20Financial%20Report-Secured.pdf" target="_blank" class="list-item-link"><strong>FY 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/docs/FY15-City-of-Miami-Comprehensive-Annual-Financial-Report-Final.pdf" target="_blank" class="list-item-link"><strong>FY 2015</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/CAFR/FY14%20City%20of%20Miami%20CAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2014</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/CAFR/FY13CAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2013</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/CAFR/2012_CAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2012</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/CAFR/2011%20CAFR_w_EY%20Opinion_v1_5-18-12.pdf" target="_blank" class="list-item-link"><strong>FY 2011</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/CAFR/City%20of%20Miami%20FY2010%20CAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2010</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/CAFR/City%20of%20Miami%20FY2009%20CAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2009</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/CAFR/2008%20CAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2008</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/CAFR/2007%20CAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2007</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/CAFR/2006CAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2006</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/CAFR/2005CAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2005</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/CAFR/2004CAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2004</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/CAFR/2003%20CAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2003</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                            </ul></div>
+                        </div>
+                        <!-- PAFR Accordion -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-left transition text-lg">
+                                <span>Popular Annual Financial Reports (PAFR)</span><span x-text="open ? '−' : '+'" class="text-2xl font-mono"></span>
+                            </button>
+                            <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="p-4 bg-white border rounded-b-lg"><ul class="space-y-3">
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/City%20of%20Miami%20Popular%20Annual%20Financial%20Report%20as%20September%2030,%202024%20%28Electronic%29secured.pdf" target="_blank" class="list-item-link"><strong>FY 2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/City%20of%20Miami%20Popular%20Annual%20Financial%20Report%20as%20September%2030,%202023%20%28Electronic%29secured.pdf" target="_blank" class="list-item-link"><strong>FY 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/City%20of%20Miami%20Popular%20Annual%20Financial%20Report%20as%20September%2030,%202022%20-%20FINAL%20%28SECURED%29.pdf" target="_blank" class="list-item-link"><strong>FY 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/City%20of%20Miami%20Popular%20Annual%20Financial%20Report%20as%20September%2030,%202021-FINAL%20%28SECURED%29.pdf" target="_blank" class="list-item-link"><strong>FY 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/City%20of%20Miami%20Popular%20Annual%20Financial%20Report%20as%20September%2030,%202020-FINAL%20%28Secured%29.pdf" target="_blank" class="list-item-link"><strong>FY 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/City%20of%20Miami%20Popular%20Annual%20Financial%20Report%20as%20September%2030,%202019%20%28Secured%29.pdf" target="_blank" class="list-item-link"><strong>FY 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/City%20of%20MiamiPopular%20Annual%20Financial%20Report%20as%20September%2030,%202018%20SECURED.pdf" target="_blank" class="list-item-link"><strong>FY 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/FY17%20City%20of%20Miami%20Florida%20Popular%20Annual%20Financial%20Report%20Final%20Secured.pdf" target="_blank" class="list-item-link"><strong>FY 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/FY16CityofMiamiFloridaPopularAnnualFinancialReportSecured.pdf" target="_blank" class="list-item-link"><strong>FY 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/FY15%20City%20of%20Miami%20Florida%20Popular%20Annual%20Financial%20Report.pdf" target="_blank" class="list-item-link"><strong>FY 2015</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/FY14%20City%20of%20Miami%20PAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2014</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/FY13%20PAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2013</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/2012%20PAFR%20-%20Final.pdf" target="_blank" class="list-item-link"><strong>FY 2012</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/2011%20PAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2011</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/City%20of%20Miami%20FY%202010%20PAFR%20-%20Final.pdf" target="_blank" class="list-item-link"><strong>FY 2010</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/PAFRS/2009%20FINAL%20PAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2009</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/2008%20PAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2008</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/2007%20PAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2007</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/2006%20PAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2006</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/2005%20PAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2005</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/2004%20PAFR.pdf" target="_blank" class="list-item-link"><strong>FY 2004</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                            </ul></div>
+                        </div>
+
+                        <!-- Single Audit Accordion -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-left transition text-lg">
+                                <span>Single Audit Reports</span><span x-text="open ? '−' : '+'" class="text-2xl font-mono"></span>
+                            </button>
+                            <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="p-4 bg-white border rounded-b-lg"><ul class="space-y-3">
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/City%20of%20Miami%20Single%20Audit%202024%20(secured).pdf" target="_blank" class="list-item-link"><strong>FY 2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/City%20of%20Miami%20Single%20Audit%202023(secured).pdf" target="_blank" class="list-item-link"><strong>FY 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/City%20of%20Miami%20Single%20Audit%202022%20(SECURED).pdf" target="_blank" class="list-item-link"><strong>FY 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/City%20of%20Miami%20Florida_21%20Compliance_Final.pdf" target="_blank" class="list-item-link"><strong>FY 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/City%20of%20Miami,%20Florida_20%20Single%20Audit_FINAL.pdf" target="_blank" class="list-item-link"><strong>FY 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/City%20of%20Miami%20Florida%20Compliance_19%20FS_FINAL(SECURED).pdf" target="_blank" class="list-item-link"><strong>FY 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/FY2018%20City%20of%20Miami%20Single%20Audit.pdf" target="_blank" class="list-item-link"><strong>FY 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/CityofMiamiFloridaCompliance2017FINAL522018Secured.pdf" target="_blank" class="list-item-link"><strong>FY 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/City%20of%20Miami%20Florida%20Compliance%20-%202016%20FINAL%20-%205-2-2017%20Secured.pdf" target="_blank" class="list-item-link"><strong>FY 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/City%20of%20Miami%20Florida%20Compliance%20-%202015%20FINAL%205-27-2016-Secured.pdf" target="_blank" class="list-item-link"><strong>FY 2015</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/FY14%20City%20of%20Miami%20Florida%20Single%20Audit%20FINAL.PDF" target="_blank" class="list-item-link"><strong>FY 2014</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/FY13%20City%20of%20Miami%20-%20Single%20Audit.pdf" target="_blank" class="list-item-link"><strong>FY 2013</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/Single%20Audit%20Report/City_of_Miami_Single_Audit_2012.pdf" target="_blank" class="list-item-link"><strong>FY 2012</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/Single%20Audit%20Report/City%20of%20Miami%20-%20Single%20Audit%20Report%20FY%202011%20-%20FINAL.PDF" target="_blank" class="list-item-link"><strong>FY 2011</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/Single%20Audit%20Report/City%20of%20Miami%20FY%202010%20Single%20Audit.pdf" target="_blank" class="list-item-link"><strong>FY 2010</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/Single%20Audit%20Report/Single%20Audit%20FY-2009.pdf" target="_blank" class="list-item-link"><strong>FY 2009</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/Single%20Audit%20Report/FY2008_Single_Audit_Report.pdf" target="_blank" class="list-item-link"><strong>FY 2008</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/Single%20Audit%20Report/City%20of%20Miami%202007%20Single%20Audit%20Report.pdf" target="_blank" class="list-item-link"><strong>FY 2007</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/Single%20Audit%20Report/FY%202006%20Single%20Audit%20and%20Management%20Letter.pdf" target="_blank" class="list-item-link"><strong>FY 2006</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/Single%20Audit%20Report/City%20of%20Miami%20FY%202005%20Single%20Audit.pdf" target="_blank" class="list-item-link"><strong>FY 2005</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/Single%20Audit%20Report/City%20of%20Miami%20FY%202004%20Single%20Audit.pdf" target="_blank" class="list-item-link"><strong>FY 2004</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="https://archive.miami.gov/finance/Single%20Audit%20Report/City%20of%20Miami%20FY%202003%20Single%20Audit.pdf" target="_blank" class="list-item-link"><strong>FY 2003</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                            </ul></div>
+                        </div>
+
+                        <!-- Management Letters Accordion -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-left transition text-lg">
+                                <span>Management Letters</span><span x-text="open ? '−' : '+'" class="text-2xl font-mono"></span>
+                            </button>
+                            <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="p-4 bg-white border rounded-b-lg"><ul class="space-y-3">
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/City%20of%20Miami_24%20State%20Management%20Letter_Final.pdf" target="_blank" class="list-item-link"><strong>FY 2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/City%20of%20Miami%202023%20Management%20Letter%20secured.pdf" target="_blank" class="list-item-link"><strong>FY 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/City%20of%20Miami,%20Florida_22%20State%20Management%20Letter_Final(%20Secured).pdf" target="_blank" class="list-item-link"><strong>FY 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/City%20of%20Miami%20Florida_21%20Management%20Letter_Final.pdf" target="_blank" class="list-item-link"><strong>FY 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/PAFRS/City%20of%20Miami,%20Florida_20%20Management%20Letter_FINAL.pdf" target="_blank" class="list-item-link"><strong>FY 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/City%20of%20Miami%20Management%20Letter_19%20FINAL%20(SECURED).pdf" target="_blank" class="list-item-link"><strong>FY 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/FY2018%20City%20of%20Miami%20Management%20Letter.pdf" target="_blank" class="list-item-link"><strong>FY 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/CityofMiamiManagementLetter-2017FINAL.pdf" target="_blank" class="list-item-link"><strong>FY 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/City%20of%20Miami%20Management%20Letter%20-%202016%20FINAL%205-2-2017%20Secured.pdf" target="_blank" class="list-item-link"><strong>FY 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/pages/FinancialInfo/ManagementLEtters/FY2015%20City%20of%20Miami%20Management%20Letter.pdf" target="_blank" class="list-item-link"><strong>FY 2015</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/pages/FinancialInfo/ManagementLEtters/FY2014%20City%20of%20Miami%20Management%20Letter.pdf" target="_blank" class="list-item-link"><strong>FY 2014</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/pages/FinancialInfo/ManagementLEtters/FY2013%20City%20of%20Miami%20Management%20Letter.pdf" target="_blank" class="list-item-link"><strong>FY 2013</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/pages/FinancialInfo/ManagementLEtters/FY2012%20City%20of%20Miami%20Management%20Letter.pdf" target="_blank" class="list-item-link"><strong>FY 2012</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/pages/FinancialInfo/ManagementLEtters/FY2011%20City%20of%20Miami%20Management%20Letter.pdf" target="_blank" class="list-item-link"><strong>FY 2011</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/pages/FinancialInfo/ManagementLEtters/FY2010%20City%20of%20Miami%20Management%20Letter.pdf" target="_blank" class="list-item-link"><strong>FY 2010</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/pages/FinancialInfo/ManagementLEtters/FY2009%20City%20of%20Miami%20Management%20Letter.pdf" target="_blank" class="list-item-link"><strong>FY 2009</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/pages/FinancialInfo/ManagementLEtters/FY2008%20City%20of%20Miami%20Management%20Letter.pdf" target="_blank" class="list-item-link"><strong>FY 2008</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/pages/FinancialInfo/ManagementLEtters/FY2007%20City%20of%20Miami%20Management%20Letter.pdf" target="_blank" class="list-item-link"><strong>FY 2007</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/pages/FinancialInfo/ManagementLEtters/FY2006%20City%20of%20Miami%20Management%20Letter.pdf" target="_blank" class="list-item-link"><strong>FY 2006</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                            </ul></div>
+                        </div>
+
+                        
+                            <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-left transition text-lg">
+                                <span>Suplemental Reports to Bond Holders</span><span x-text="open ? '−' : '+'" class="text-2xl font-mono"></span>
+                            </button>
+                            <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="p-4 bg-white border rounded-b-lg"><ul class="space-y-3">
+                                <li><a href="http://archive.miamigov.com/finance/docs/Bondholder%20Report%20%202024-25_%20Electronic%20V.pdf" target="_blank" class="list-item-link"><strong>FY 2024</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/Bondholder%20Report%20%202023%2024%5Fv3.pdf" target="_blank" class="list-item-link"><strong>FY 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/Supplemental%20Report%20to%20Bondholders%20FY2022%20Final.pdf" target="_blank" class="list-item-link"><strong>FY 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/COM%20FY21%20Bond%20Holder%20Report%20-%20Final.pdf" target="_blank" class="list-item-link"><strong>FY 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/FY%2020%20Bond%20Holder%20Report%20Final-%20Secured.pdf" target="_blank" class="list-item-link"><strong>FY 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/FY%2019%20Bond%20Holder%20Report%20Final-%20Secured.pdf" target="_blank" class="list-item-link"><strong>FY 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/BondHolderReportFinal%28Secured%29.pdf" target="_blank" class="list-item-link"><strong>FY 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/FY2017%20Supplemental%20Report%20to%20Bond%20Holders%20Secured.pdf" target="_blank" class="list-item-link"><strong>FY 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/FY2016SupplementalBondholderReportSecured.pdf" target="_blank" class="list-item-link"><strong>FY 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/FY15%20Supplemental%20Report%20to%20Bondholder%20Secured.pdf" target="_blank" class="list-item-link"><strong>FY 2015</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/FY14%20Supplemental%20Report%20to%20Bondholder%20Final%204-21-2015.pdf" target="_blank" class="list-item-link"><strong>FY 2014</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs/FY13%20Supplemental%20Report%20to%20Bondholders.pdf" target="_blank" class="list-item-link"><strong>FY 2013</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/docs2012/Supplemental%20Report%20to%20Bond%20Holders%2009-30-2012.pdf" target="_blank" class="list-item-link"><strong>FY 2012</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/SupplementalReports/Material%20Event%20Notice-%202011%20Supplemental%20Report%20to%20Bond%20Holders.pdf" target="_blank" class="list-item-link"><strong>FY 2011</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/SupplementalReports/Supp-Rpt-FY-2010.pdf" target="_blank" class="list-item-link"><strong>FY 2010</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/SupplementalReports/Supp%20Rpt%202009.pdf" target="_blank" class="list-item-link"><strong>FY 2009</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/SupplementalReports/Supp-Rpt-FY-2008.pdf" target="_blank" class="list-item-link"><strong>FY 2008</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/SupplementalReports/Supp-Rpt-FY-2007.pdf" target="_blank" class="list-item-link"><strong>FY 2007</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/SupplementalReports/Supp-Rpt-FY-2006.pdf" target="_blank" class="list-item-link"><strong>FY 2006</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/SupplementalReports/Supp%20Rpt%20FY%202005.pdf" target="_blank" class="list-item-link"><strong>FY 2005</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/SupplementalReports/Supp-Rpt-FY-2004.pdf" target="_blank" class="list-item-link"><strong>FY 2004</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                <li><a href="http://archive.miamigov.com/finance/SupplementalReports/Supp-Rpt-FY-2003.pdf" target="_blank" class="list-item-link"><strong>FY 2003</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                            </ul></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Debt Management Tab -->
+                <div x-show="activeTab === 'debt-management'" x-cloak x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Debt Management</h2>
+                    <div class="space-y-4">
+                        <!-- Summary of Outstanding Debt Accordion -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-left transition text-lg">
+                                <span>Summary of Outstanding Debt</span><span x-text="open ? '−' : '+'" class="text-2xl font-mono"></span>
+                            </button>
+                            <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="p-4 bg-white border rounded-b-lg">
+                                <ul class="space-y-3">
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Summary%20of%20Debt%20Outstanding.pdf" target="_blank" class="list-item-link"><strong>FY 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Summary%20of%20Outstanding%20Debt%20FY22.pdf" target="_blank" class="list-item-link"><strong>FY 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Outstanding%20Debt%202021.pdf" target="_blank" class="list-item-link"><strong>FY 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Legally%20Available%20Non%20Ad%20Valorem%20Revenue%20FY-2020(withCRA)_1.pdf" target="_blank" class="list-item-link"><strong>FY 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Summary%20of%20Outstanding%20Debt%20FY%202019.pdf" target="_blank" class="list-item-link"><strong>FY 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Summary%20of%20Outstanding%20Debt%20FY%202018.pdf" target="_blank" class="list-item-link"><strong>FY 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Summary%20of%20Outstanding%20Debt%20FY%202017.pdf" target="_blank" class="list-item-link"><strong>FY 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/docs/FY16%20Summary%20of%20Outstanding%20Debt.pdf" target="_blank" class="list-item-link"><strong>FY 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/docs/FY15%20Summary%20of%20Outstanding%20Debt-Secured.pdf" target="_blank" class="list-item-link"><strong>FY 2015</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/docs/FY14%20Summary%20of%20Outstanding%20Debt.pdf" target="_blank" class="list-item-link"><strong>FY 2014</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/docs/FY13%20Summary%20of%20Outstanding%20Debt.pdf" target="_blank" class="list-item-link"><strong>FY 2013</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/docs2012/Summary%20of%20Outstanding%20Debt%20FY-2012.pdf" target="_blank" class="list-item-link"><strong>FY 2012</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/SummaryOutstandingDebt/Sum%20LT%20Debt%202011.pdf" target="_blank" class="list-item-link"><strong>FY 2011</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/SummaryOutstandingDebt/Sum-Lt-Debt%202010.pdf" target="_blank" class="list-item-link"><strong>FY 2010</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/SummaryOutstandingDebt/Sum-LT-Debt%202009.pdf" target="_blank" class="list-item-link"><strong>FY 2009</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/SummaryOutstandingDebt/FY-2008.pdf" target="_blank" class="list-item-link"><strong>FY 2008</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/SummaryOutstandingDebt/FY-2007.pdf" target="_blank" class="list-item-link"><strong>FY 2007</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/SummaryOutstandingDebt/FY-2006.pdf" target="_blank" class="list-item-link"><strong>FY 2006</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/SummaryOutstandingDebt/FY-2005.pdf" target="_blank" class="list-item-link"><strong>FY 2005</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/SummaryOutstandingDebt/FY-2004.pdf" target="_blank" class="list-item-link"><strong>FY 2004</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/SummaryOutstandingDebt/FY-2003.pdf" target="_blank" class="list-item-link"><strong>FY 2003</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Debt Ratios Accordion -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-left transition text-lg">
+                                <span>Debt Ratios</span><span x-text="open ? '−' : '+'" class="text-2xl font-mono"></span>
+                            </button>
+                            <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="p-4 bg-white border rounded-b-lg">
+                                <ul class="space-y-3">
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Debt%20Ratio.pdf" target="_blank" class="list-item-link"><strong>FY 2023</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Debt%20Ratio%20FY%2022.pdf" target="_blank" class="list-item-link"><strong>FY 2022</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Debit%20Ratio%202021.pdf" target="_blank" class="list-item-link"><strong>FY 2021</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/DebtRatio.pdf" target="_blank" class="list-item-link"><strong>FY 2020</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Debt%20Ratio%20FY%202019.pdf" target="_blank" class="list-item-link"><strong>FY 2019</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/docs/Legally%20Available%20Non%20Ad%20Valorem%20Revenue%20FY-2018.pdf" target="_blank" class="list-item-link"><strong>FY 2018</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/docs/Legally%20Available%20Non%20Ad%20Valorem%20Revenue%20FY-2017.pdf" target="_blank" class="list-item-link"><strong>FY 2017</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/docs/FY15%20Debt%20Ratios-secured.pdf" target="_blank" class="list-item-link"><strong>FY 2015</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/docs/FY16%20Debt%20Ratios.pdf" target="_blank" class="list-item-link"><strong>FY 2016</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/docs/FY14%20Debt%20Ratios.pdf" target="_blank" class="list-item-link"><strong>FY 2014</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/docs/FY13%20Debt%20Ratios.pdf" target="_blank" class="list-item-link"><strong>FY 2013</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/docs2012/Debt%20Ratios%20FY-2012.pdf" target="_blank" class="list-item-link"><strong>FY 2012</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Debt%20Ratios%202011.pdf" target="_blank" class="list-item-link"><strong>FY 2011</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Debt%20Ratios%202010.pdf" target="_blank" class="list-item-link"><strong>FY 2010</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Debt%20Ratios%202009.pdf" target="_blank" class="list-item-link"><strong>FY 2009</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Debt-Ratios-08.pdf" target="_blank" class="list-item-link"><strong>FY 2008</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Debt-Ratios-07.pdf" target="_blank" class="list-item-link"><strong>FY 2007</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Debt-Ratios-06.pdf" target="_blank" class="list-item-link"><strong>FY 2006</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Debt-Ratios-05.pdf" target="_blank" class="list-item-link"><strong>FY 2005</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Debt-Ratios-04.pdf" target="_blank" class="list-item-link"><strong>FY 2004</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                    <li><a href="http://archive.miamigov.com/finance/DebtRatio/Debt-Ratios-03.pdf" target="_blank" class="list-item-link"><strong>FY 2003</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center p-6 border-t border-gray-200 text-sm text-gray-500">
+             <div class="flex justify-center flex-wrap gap-x-4 gap-y-2 mb-4">
+                <a href="http://assistive.usablenet.com/tt/www.miamigov.com" class="hover:underline">Text Only</a>
+                <a href="http://www.miamigov.com/pages/privacypolicy.asp" class="hover:underline">Privacy Policy</a>
+                <a href="http://www.miamigov.com/ADA/Pages/PublicNotice/Policy.asp" class="hover:underline">ADA Public Notice</a>
+                <a href="mailto:webmaster@miamigov.com" class="hover:underline">Webmaster</a>
+            </div>
+            <p>&copy; <span x-data x-text="new Date().getFullYear()"></span> City of Miami. All Rights Reserved.</p>
+        </footer>
+
+    </div>
+
+    <!-- If styles are not loading, check that the Tailwind and Alpine CDN links are correct and not blocked by browser settings or extensions. -->
+    <noscript><div style="background: #fffae6; color: #b45309; padding: 1em; text-align: center; font-weight: bold;">This site requires JavaScript and a working internet connection to load styles. If the site looks unstyled, please check your browser settings.</div></noscript>
+</body>
+</html>
