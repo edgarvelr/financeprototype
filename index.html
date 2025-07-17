@@ -1,108 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- ========================================
+         DOCUMENT HEAD - METADATA & EXTERNAL RESOURCES
+         ======================================== -->
+    
+    <!-- Character encoding and responsive viewport settings -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Financial Information - City of Miami</title>
 
-    <!-- Tailwind CSS for styling -->
+    <!-- ========================================
+         EXTERNAL DEPENDENCIES
+         ======================================== -->
+    
+    <!-- Tailwind CSS Framework - Provides utility classes for styling -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
 
-    <!-- Alpine.js for interactivity -->
+    <!-- Alpine.js Framework - Lightweight JavaScript framework for reactive components -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
-    <!-- Google Fonts: Inter & Merriweather -->
+    <!-- Google Fonts - Typography enhancement -->
+    <!-- Inter: Modern sans-serif for body text -->
+    <!-- Merriweather: Serif font for headings -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
 
+    <!-- ========================================
+         CUSTOM STYLES - CSS OVERRIDES & ENHANCEMENTS
+         ======================================== -->
     <style>
-        /* Define custom fonts for Tailwind */
+        /* ========================================
+           TYPOGRAPHY & BASE STYLES
+           ======================================== */
+        
+        /* Apply Inter font family to body text for modern, readable typography */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f3f4f6; /* Light gray background */
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions for theme switching */
         }
         
-        /* Dark mode styles */
+        /* ========================================
+           DARK MODE THEME STYLES
+           ======================================== */
+        
+        /* Dark mode body styling - applied when 'dark' class is present */
         body.dark {
             background-color: #111827; /* Dark gray background */
-            color: #f9fafb;
+            color: #f9fafb; /* Light text color */
         }
         
+        /* Apply Merriweather serif font to headings for visual hierarchy */
         h1, h2, h3 {
             font-family: 'Merriweather', serif;
         }
         
-        /* Custom styles for Alpine.js transitions */
+        /* ========================================
+           ALPINE.JS UTILITY STYLES
+           ======================================== */
+        
+        /* Hide elements with x-cloak attribute until Alpine.js initializes */
+        /* This prevents flash of unstyled content during page load */
         [x-cloak] { display: none !important; }
         
+        /* ========================================
+           DOCUMENT LINK STYLES
+           ======================================== */
+        
+        /* Styling for clickable document links in the main content area */
         .list-item-link {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            background-color: #f9fafb; /* bg-gray-50 */
-            border-radius: 0.5rem; /* rounded-lg */
-            border: 1px solid #e5e7eb;
-            transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+            display: flex; /* Flexbox layout for horizontal alignment */
+            justify-content: space-between; /* Space content between left and right */
+            align-items: center; /* Vertically center content */
+            padding: 0.75rem 1rem; /* Internal spacing */
+            background-color: #f9fafb; /* Light gray background (bg-gray-50) */
+            border-radius: 0.5rem; /* Rounded corners (rounded-lg) */
+            border: 1px solid #e5e7eb; /* Subtle border */
+            transition: background-color 0.2s, border-color 0.2s, color 0.2s; /* Smooth hover transitions */
         }
         
+        /* Hover effect for document links */
         .list-item-link:hover {
-            background-color: #f3f4f6; /* hover:bg-gray-100 */
-            border-color: #d1d5db;
+            background-color: #f3f4f6; /* Slightly darker background on hover (hover:bg-gray-100) */
+            border-color: #d1d5db; /* Darker border on hover */
         }
         
-        /* Dark mode list item styles */
+        /* ========================================
+           DARK MODE DOCUMENT LINK STYLES
+           ======================================== */
+        
+        /* Dark mode styling for document links */
         body.dark .list-item-link {
-            background-color: #374151; /* bg-gray-700 */
-            border-color: #4b5563;
-            color: #f9fafb;
+            background-color: #374151; /* Dark gray background (bg-gray-700) */
+            border-color: #4b5563; /* Darker border */
+            color: #f9fafb; /* Light text color */
         }
         
+        /* Dark mode hover effect for document links */
         body.dark .list-item-link:hover {
-            background-color: #4b5563; /* hover:bg-gray-600 */
-            border-color: #6b7280;
+            background-color: #4b5563; /* Lighter background on hover (hover:bg-gray-600) */
+            border-color: #6b7280; /* Lighter border on hover */
         }
         
+        /* ========================================
+           SECTION SUBTITLE STYLES
+           ======================================== */
+        
+        /* Styling for section subtitles within accordion content */
         .section-subtitle {
-            margin-top: 2rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #e5e7eb;
-            font-size: 1.25rem;
-            color: #1f2937;
-            font-weight: 700;
-            transition: color 0.3s ease, border-color 0.3s ease;
+            margin-top: 2rem; /* Top spacing from previous content */
+            padding-bottom: 0.5rem; /* Bottom padding for border spacing */
+            border-bottom: 1px solid #e5e7eb; /* Subtle bottom border for visual separation */
+            font-size: 1.25rem; /* Larger font size for hierarchy */
+            color: #1f2937; /* Dark text color */
+            font-weight: 700; /* Bold font weight for emphasis */
+            transition: color 0.3s ease, border-color 0.3s ease; /* Smooth transitions for theme switching */
         }
         
-        /* Dark mode section subtitle */
+        /* ========================================
+           DARK MODE SECTION SUBTITLE STYLES
+           ======================================== */
+        
+        /* Dark mode styling for section subtitles */
         body.dark .section-subtitle {
-            color: #f9fafb;
-            border-bottom-color: #4b5563;
+            color: #f9fafb; /* Light text color for dark mode */
+            border-bottom-color: #4b5563; /* Darker border for dark mode */
         }
         
-        /* Dark mode toggle button */
+        /* ========================================
+           DARK MODE TOGGLE BUTTON STYLES
+           ======================================== */
+        
+        /* Styling for the dark mode toggle button (legacy - now using switch) */
         .dark-mode-toggle {
-            background: linear-gradient(45deg, #fbbf24, #f59e0b);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(45deg, #fbbf24, #f59e0b); /* Orange gradient background */
+            border: none; /* Remove default border */
+            border-radius: 50%; /* Circular button */
+            width: 40px; /* Fixed width */
+            height: 40px; /* Fixed height */
+            display: flex; /* Flexbox for centering content */
+            align-items: center; /* Vertical centering */
+            justify-content: center; /* Horizontal centering */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: all 0.3s ease; /* Smooth transitions for all properties */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
         }
         
+        /* Hover effect for dark mode toggle button */
         .dark-mode-toggle:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: scale(1.05); /* Slight scale increase on hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
         }
         
+        /* Dark mode styling for toggle button */
         body.dark .dark-mode-toggle {
-            background: linear-gradient(45deg, #1f2937, #374151);
+            background: linear-gradient(45deg, #1f2937, #374151); /* Dark gradient for dark mode */
         }
         
         /* Dark mode header */
@@ -270,8 +324,32 @@
 </head>
 <body class="bg-gray-100">
 
-    <!-- Responsive Header -->
-    <header class="bg-white shadow-md sticky top-0 z-40" x-data="{ mobileMenuOpen: false, isDarkMode: false }" x-init="isDarkMode = localStorage.getItem('darkMode') === 'true'; if (isDarkMode) { document.body.classList.add('dark'); } window.toggleDarkMode = function() { isDarkMode = !isDarkMode; if (isDarkMode) { document.body.classList.add('dark'); localStorage.setItem('darkMode', 'true'); } else { document.body.classList.remove('dark'); localStorage.setItem('darkMode', 'false'); } }">
+    <!-- ========================================
+         RESPONSIVE HEADER - NAVIGATION & CONTROLS
+         ======================================== -->
+    
+    <!-- Main header with sticky positioning and Alpine.js data management -->
+    <header class="bg-white shadow-md sticky top-0 z-40" 
+            x-data="{ mobileMenuOpen: false, isDarkMode: false }" 
+            x-init="
+                // Initialize dark mode state from localStorage
+                isDarkMode = localStorage.getItem('darkMode') === 'true';
+                if (isDarkMode) { 
+                    document.body.classList.add('dark'); 
+                }
+                
+                // Global function to toggle dark mode
+                window.toggleDarkMode = function() { 
+                    isDarkMode = !isDarkMode; 
+                    if (isDarkMode) { 
+                        document.body.classList.add('dark'); 
+                        localStorage.setItem('darkMode', 'true'); 
+                    } else { 
+                        document.body.classList.remove('dark'); 
+                        localStorage.setItem('darkMode', 'false'); 
+                    } 
+                }
+            ">
         <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16 w-full">
                 <!-- Logo only, no text -->
@@ -321,35 +399,50 @@
         </div>
     </header>
 
+    <!-- ========================================
+         MAIN CONTENT CONTAINER
+         ======================================== -->
+    
+    <!-- Central content wrapper with responsive padding and styling -->
     <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-7xl bg-white rounded-lg shadow-lg my-8">
 
-        <!-- Main Content Area -->
-        <main class="p-6 md:p-8" x-data="{ activeTab: 'policies', isDarkMode: false }" x-init="
-            // Check for saved dark mode preference or default to light mode
-            isDarkMode = localStorage.getItem('darkMode') === 'true';
-            if (isDarkMode) {
-                document.body.classList.add('dark');
-            }
-            
-            // Function to toggle dark mode
-            window.toggleDarkMode = function() {
-                isDarkMode = !isDarkMode;
+        <!-- ========================================
+             MAIN CONTENT AREA - TABBED INTERFACE
+             ======================================== -->
+        
+        <!-- Main content with Alpine.js tab management and dark mode functionality -->
+        <main class="p-6 md:p-8" 
+              x-data="{ activeTab: 'policies', isDarkMode: false }" 
+              x-init="
+                // Check for saved dark mode preference or default to light mode
+                isDarkMode = localStorage.getItem('darkMode') === 'true';
                 if (isDarkMode) {
                     document.body.classList.add('dark');
-                    localStorage.setItem('darkMode', 'true');
-                } else {
-                    document.body.classList.remove('dark');
-                    localStorage.setItem('darkMode', 'false');
                 }
-            }
-            
-            // Ensure activeTab is properly initialized
-            if (!activeTab) {
-                activeTab = 'policies';
-            }
-        ">
+                
+                // Function to toggle dark mode (redundant with header but ensures availability)
+                window.toggleDarkMode = function() {
+                    isDarkMode = !isDarkMode;
+                    if (isDarkMode) {
+                        document.body.classList.add('dark');
+                        localStorage.setItem('darkMode', 'true');
+                    } else {
+                        document.body.classList.remove('dark');
+                        localStorage.setItem('darkMode', 'false');
+                    }
+                }
+                
+                // Ensure activeTab is properly initialized to 'policies' by default
+                if (!activeTab) {
+                    activeTab = 'policies';
+                }
+            ">
 
-            <!-- Welcome Title -->
+            <!-- ========================================
+                 WELCOME SECTION - PAGE HEADER
+                 ======================================== -->
+            
+            <!-- Main page title and description -->
             <div class="text-center mb-12">
                  <h1 class="text-4xl md:text-5xl font-bold text-gray-800">Financial Information</h1>
                  <p class="text-lg text-gray-600 max-w-3xl mx-auto mt-4">
@@ -357,22 +450,76 @@
                 </p>
             </div>
 
-            <!-- Tab Buttons -->
+            <!-- ========================================
+                 TAB NAVIGATION - CONTENT ORGANIZATION
+                 ======================================== -->
+            
+            <!-- Tab navigation bar with responsive design and active state management -->
             <div class="border-b border-gray-200 mb-8">
                 <nav class="-mb-px flex flex-wrap justify-center gap-x-4 sm:gap-x-6" aria-label="Tabs">
-                    <button @click="activeTab = 'policies'" :class="{'border-blue-600 text-blue-700': activeTab === 'policies', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'policies'}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors">Policies and Procedures</button>
-                    <button @click="activeTab = 'eort'" :class="{'border-blue-600 text-blue-700': activeTab === 'eort', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'eort'}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors">EORT Actuarial Valuation Reports</button>
-                    <button @click="activeTab = 'cost-allocation'" :class="{'border-blue-600 text-blue-700': activeTab === 'cost-allocation', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'cost-allocation'}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors">Cost Allocation Plan</button>
-                    <button @click="activeTab = 'monthly-reports'" :class="{'border-blue-600 text-blue-700': activeTab === 'monthly-reports', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'monthly-reports'}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors">Monthly Financial Reports</button>
-                    <button @click="activeTab = 'annual-reports'" :class="{'border-blue-600 text-blue-700': activeTab === 'annual-reports', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'annual-reports'}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors">Annual Reports</button>
-                    <button @click="activeTab = 'debt-management'" :class="{'border-blue-600 text-blue-700': activeTab === 'debt-management', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'debt-management'}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors">Debt Management</button>
+                    <!-- Policies and Procedures Tab -->
+                    <button @click="activeTab = 'policies'" 
+                            :class="{'border-blue-600 text-blue-700': activeTab === 'policies', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'policies'}" 
+                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors">
+                        Policies and Procedures
+                    </button>
+                    
+                    <!-- EORT Actuarial Valuation Reports Tab -->
+                    <button @click="activeTab = 'eort'" 
+                            :class="{'border-blue-600 text-blue-700': activeTab === 'eort', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'eort'}" 
+                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors">
+                        EORT Actuarial Valuation Reports
+                    </button>
+                    
+                    <!-- Cost Allocation Plan Tab -->
+                    <button @click="activeTab = 'cost-allocation'" 
+                            :class="{'border-blue-600 text-blue-700': activeTab === 'cost-allocation', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'cost-allocation'}" 
+                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors">
+                        Cost Allocation Plan
+                    </button>
+                    
+                    <!-- Monthly Financial Reports Tab -->
+                    <button @click="activeTab = 'monthly-reports'" 
+                            :class="{'border-blue-600 text-blue-700': activeTab === 'monthly-reports', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'monthly-reports'}" 
+                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors">
+                        Monthly Financial Reports
+                    </button>
+                    
+                    <!-- Annual Reports Tab -->
+                    <button @click="activeTab = 'annual-reports'" 
+                            :class="{'border-blue-600 text-blue-700': activeTab === 'annual-reports', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'annual-reports'}" 
+                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors">
+                        Annual Reports
+                    </button>
+                    
+                    <!-- Debt Management Tab -->
+                    <button @click="activeTab = 'debt-management'" 
+                            :class="{'border-blue-600 text-blue-700': activeTab === 'debt-management', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'debt-management'}" 
+                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors">
+                        Debt Management
+                    </button>
                 </nav>
             </div>
 
-            <!-- Tab Content -->
+            <!-- ========================================
+                 TAB CONTENT AREA - DYNAMIC CONTENT DISPLAY
+                 ======================================== -->
+            
+            <!-- Container for all tab content with Alpine.js show/hide logic -->
             <div>
-                <!-- Policies Tab -->
-                <div x-show="activeTab === 'policies'" x-cloak x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95">
+                <!-- ========================================
+                     POLICIES AND PROCEDURES TAB
+                     ======================================== -->
+                
+                <!-- Policies tab content with smooth transitions and Alpine.js visibility control -->
+                <div x-show="activeTab === 'policies'" 
+                     x-cloak 
+                     x-transition:enter="transition ease-out duration-300" 
+                     x-transition:enter-start="opacity-0 transform scale-95" 
+                     x-transition:enter-end="opacity-100 transform scale-100" 
+                     x-transition:leave="transition ease-in duration-200" 
+                     x-transition:leave-start="opacity-100 transform scale-100" 
+                     x-transition:leave-end="opacity-0 transform scale-95">
                     <h2 class="text-3xl font-bold text-gray-800 mb-6">Policies and Procedures</h2>
                     <ul class="space-y-3">
                         <li><a href="https://archive.miami.gov/finance/Policies&Procedures&Definitions/City%20of%20Miami%20Debt%20Management%20Policy.pdf" target="_blank" class="list-item-link"><strong>Debt Management Policy</strong><span class="text-blue-600 font-semibold">View PDF</span></a></li>
@@ -865,20 +1012,39 @@
 
         </main>
 
-        <!-- Footer -->
+        <!-- ========================================
+             FOOTER - LEGAL LINKS & COPYRIGHT
+             ======================================== -->
+        
+        <!-- Footer with accessibility links, legal information, and dynamic copyright year -->
         <footer class="text-center p-6 border-t border-gray-200 text-sm text-gray-500">
+             <!-- Footer navigation links -->
              <div class="flex justify-center flex-wrap gap-x-4 gap-y-2 mb-4">
+                <!-- Accessibility link for text-only version -->
                 <a href="http://assistive.usablenet.com/tt/www.miamigov.com" class="hover:underline">Text Only</a>
+                <!-- Privacy policy link -->
                 <a href="http://www.miamigov.com/pages/privacypolicy.asp" class="hover:underline">Privacy Policy</a>
+                <!-- ADA compliance notice -->
                 <a href="http://www.miamigov.com/ADA/Pages/PublicNotice/Policy.asp" class="hover:underline">ADA Public Notice</a>
+                <!-- Contact webmaster -->
                 <a href="mailto:webmaster@miamigov.com" class="hover:underline">Webmaster</a>
             </div>
+            <!-- Copyright notice with dynamically updated year -->
             <p>&copy; <span x-data x-text="new Date().getFullYear()"></span> City of Miami. All Rights Reserved.</p>
         </footer>
 
     </div>
 
+    <!-- ========================================
+         FALLBACK MESSAGES - ACCESSIBILITY & ERROR HANDLING
+         ======================================== -->
+    
+    <!-- Fallback message for users with JavaScript disabled or when CDN resources fail to load -->
     <!-- If styles are not loading, check that the Tailwind and Alpine CDN links are correct and not blocked by browser settings or extensions. -->
-    <noscript><div style="background: #fffae6; color: #b45309; padding: 1em; text-align: center; font-weight: bold;">This site requires JavaScript and a working internet connection to load styles. If the site looks unstyled, please check your browser settings.</div></noscript>
+    <noscript>
+        <div style="background: #fffae6; color: #b45309; padding: 1em; text-align: center; font-weight: bold;">
+            This site requires JavaScript and a working internet connection to load styles. If the site looks unstyled, please check your browser settings.
+        </div>
+    </noscript>
 </body>
 </html>
